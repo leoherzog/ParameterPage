@@ -11,6 +11,10 @@
       font-family: sans-serif;
     }
     body {
+      margin: 0;
+      padding: 0;
+      width: 100vw;
+      height: 100vh;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -33,6 +37,10 @@
       font-family: inherit;
       font-size: inherit;
       border: none;
+    }
+    a {
+      color: inherit;
+      text-decoration: none;
     }
     footer {
       position: absolute;
@@ -57,12 +65,12 @@
 <body>
   <h1 id="title"></h1>
   <p id="content"></p>
-  <p id="countdown"></p>
-  <a id="link"></a>
+  <a id="link">Learn more</a>
   <section id="new" style="display:none">
     <input id="new-title" type="text" placeholder="Title" />
     <textarea id="new-content" placeholder="Content"></textarea>
     <input id="new-link" type="text" placeholder="Link" />
+    <input id="new-link-text" type="text" placeholder="Link text" />
     <div id="output" style="display:none">
       <input id="result" type="text" readonly />
       <button id="copy">📋</button>
@@ -74,16 +82,22 @@
     const title = document.getElementById('new-title');
     const content = document.getElementById('new-content');
     const link = document.getElementById('new-link');
+    const linktext = document.getElementById('new-link-text');
     const output = document.getElementById('output');
     const result = document.getElementById('result');
     const copy = document.getElementById('copy');
     const open = document.getElementById('open');
-    document.addEventListener('DOMContentLoaded', event => {
+    document.addEventListener('DOMContentLoaded', e => {
       const params = new Proxy(new URLSearchParams(window.location.search), {
         "get": (searchParams, prop) => searchParams.get(prop),
       });
       if (!params.title && !params.content && !params.link) {
         document.getElementById('new').style.display = 'flex';
+      } else {
+        document.getElementById('title').innerText = params.title;
+        document.getElementById('content').innerText = params.content;
+        document.getElementById('link').href = params.link;
+        document.getElementById('link').innerText = params.linktext;
       }
       title.addEventListener('change', e => update());
       title.addEventListener('keyup', e => update());
@@ -91,6 +105,8 @@
       content.addEventListener('keyup', e => update());
       link.addEventListener('change', e => update());
       link.addEventListener('keyup', e => update());
+      linktext.addEventListener('change', e => update());
+      linktext.addEventListener('keyup', e => update());
       copy.addEventListener('click', e => {
         result.select();
         document.execCommand('copy');
@@ -101,7 +117,7 @@
       update();
     });
     function update() {
-      if (title.value || content.value || link.value) {
+      if (title.value || content.value || (link.value && linktext.value)) {
         output.style.display = 'block';
         result.value = window.location.origin + '/?';
         let values = {"title": title.value, "content": content.value, "link": link.value};
