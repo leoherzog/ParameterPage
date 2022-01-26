@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0" />
+  <meta name="description" content="📃 A custom landing page, powered by URL query parameters" />
+  <meta name="keywords" content="" />
+  <meta name="author" content="Leo Herzog | herzog.tech" />
+  <style>
+    html {
+      font-family: sans-serif;
+    }
+    body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: black;
+      background: #eee;
+    }
+    #new {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    #new > * {
+      margin: 1em;
+      width: 100%;
+    }
+    input, textarea {
+      padding: .5em;
+      font-family: inherit;
+      font-size: inherit;
+      border: none;
+    }
+    footer {
+      position: absolute;
+      width: 100vw;
+      bottom: 0;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+    }
+    @media (prefers-color-scheme: dark) {
+      body {
+        color: #ccc;
+        background: black;
+      }
+      input, textarea {
+        background: #333;
+        color: white;
+      }
+    }
+  </style>
+</head>
+<body>
+  <h1 id="title"></h1>
+  <p id="content"></p>
+  <p id="countdown"></p>
+  <a id="link"></a>
+  <section id="new" style="display:none">
+    <input id="new-title" type="text" placeholder="Title" />
+    <textarea id="new-content" placeholder="Content"></textarea>
+    <input id="new-link" type="text" placeholder="Link" />
+    <div id="output" style="display:none">
+      <input id="result" type="text" readonly />
+      <button id="copy">📋</button>
+      <button id="open">↗️</button>
+    </div>
+  </section>
+  <footer><div>Logo</div><div>Make your own &olarr;</div></footer>
+  <script>
+    const title = document.getElementById('new-title');
+    const content = document.getElementById('new-content');
+    const link = document.getElementById('new-link');
+    const output = document.getElementById('output');
+    const result = document.getElementById('result');
+    const copy = document.getElementById('copy');
+    const open = document.getElementById('open');
+    document.addEventListener('DOMContentLoaded', event => {
+      const params = new Proxy(new URLSearchParams(window.location.search), {
+        "get": (searchParams, prop) => searchParams.get(prop),
+      });
+      if (!params.title && !params.content && !params.link) {
+        document.getElementById('new').style.display = 'flex';
+      }
+      title.addEventListener('change', e => update());
+      title.addEventListener('keyup', e => update());
+      content.addEventListener('change', e => update());
+      content.addEventListener('keyup', e => update());
+      link.addEventListener('change', e => update());
+      link.addEventListener('keyup', e => update());
+      copy.addEventListener('click', e => {
+        result.select();
+        document.execCommand('copy');
+      });
+      open.addEventListener('click', e => {
+        window.open(result.value);
+      });
+      update();
+    });
+    function update() {
+      if (title.value || content.value || link.value) {
+        output.style.display = 'block';
+        result.value = window.location.origin + '/?';
+        let values = {"title": title.value, "content": content.value, "link": link.value};
+        for (let [param, value] of Object.entries(values)) {
+          if (value) result.value += `${param}=${value.trim().escapeHtml().replace(/\n/g, '<br>')}&`;
+        }
+        result.value = result.value.slice(0, -1);
+      } else {
+        output.style.display = 'none';
+      }
+    }
+    String.prototype.escapeHtml = function() {
+      return this.replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;').replaceAll("'", '&apos;');
+    }
+  </script>
+</body>
+</html>
