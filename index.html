@@ -21,6 +21,7 @@
       justify-content: center;
       color: black;
       background: #eee;
+      text-align: center;
     }
     #new {
       display: flex;
@@ -56,8 +57,8 @@
         background: black;
       }
       input, textarea {
-        background: #333;
         color: white;
+        background: #333;
       }
     }
   </style>
@@ -65,19 +66,21 @@
 <body>
   <h1 id="title"></h1>
   <p id="content"></p>
-  <a id="link">Learn more</a>
+  <a id="link"></a>
   <section id="new" style="display:none">
     <input id="new-title" type="text" placeholder="Title" />
     <textarea id="new-content" placeholder="Content"></textarea>
-    <input id="new-link" type="text" placeholder="Link" />
-    <input id="new-link-text" type="text" placeholder="Link text" />
+    <div>
+      <input id="new-link" type="text" placeholder="Link" />
+      <input id="new-link-text" type="text" placeholder="Link text" />
+    </div>
     <div id="output" style="display:none">
       <input id="result" type="text" readonly />
       <button id="copy">📋</button>
       <button id="open">↗️</button>
     </div>
   </section>
-  <footer><div>Logo</div><div>Make your own &olarr;</div></footer>
+  <footer><div>Logo</div><div id="reset">Make your own &olarr;</div></footer>
   <script>
     const title = document.getElementById('new-title');
     const content = document.getElementById('new-content');
@@ -95,10 +98,17 @@
         document.getElementById('new').style.display = 'flex';
       } else {
         document.getElementById('title').innerText = params.title;
-        document.getElementById('content').innerText = params.content;
+        document.getElementById('content').innerHTML = params.content;
         document.getElementById('link').href = params.link;
         document.getElementById('link').innerText = params.linktext;
       }
+      document.getElementById('reset').addEventListener('click', e => {
+        title.value = '';
+        content.value = '';
+        link.value = '';
+        linktext.value = '';
+        update();
+      });
       title.addEventListener('change', e => update());
       title.addEventListener('keyup', e => update());
       content.addEventListener('change', e => update());
@@ -117,10 +127,10 @@
       update();
     });
     function update() {
-      if (title.value || content.value || (link.value && linktext.value)) {
+      if (title.value || content.value || link.value) {
         output.style.display = 'block';
         result.value = window.location.origin + '/?';
-        let values = {"title": title.value, "content": content.value, "link": link.value};
+        let values = {"title": title.value, "content": content.value, "link": link.value, "linktext": linktext.value || "Learn more"};
         for (let [param, value] of Object.entries(values)) {
           if (value) result.value += `${param}=${value.trim().escapeHtml().replace(/\n/g, '<br>')}&`;
         }
