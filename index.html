@@ -6,163 +6,77 @@
   <meta name="description" content="📃 A custom landing page, powered by URL query parameters" />
   <meta name="keywords" content="" />
   <meta name="author" content="Leo Herzog | herzog.tech" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.css" />
   <style>
-    /***
-    The new CSS reset - version 1.7.3 (last updated 7.8.2022)
-    GitHub page: https://github.com/elad2412/the-new-css-reset
-    ***/
-    *:where(:not(html, iframe, canvas, img, svg, video, audio):not(svg *, symbol *)) {
-      all: unset;
-      display: revert;
-    }
-    *,
-    *::before,
-    *::after {
-      box-sizing: border-box;
-    }
-    a, button {
-      cursor: revert;
-    }
-    ol, ul, menu {
-      list-style: none;
-    }
-    img {
-      max-width: 100%;
-    }
-    table {
-      border-collapse: collapse;
-    }
-    input, textarea {
-      -webkit-user-select: auto;
-    }
-    textarea {
-      white-space: revert;
-    }
-    meter {
-      -webkit-appearance: revert;
-      appearance: revert;
-    }
-    ::placeholder {
-      color: unset;
-    }
-    :where([hidden]) {
-      display: none;
-    }
-    :where([contenteditable]:not([contenteditable="false"])) {
-      -moz-user-modify: read-write;
-      -webkit-user-modify: read-write;
-      overflow-wrap: break-word;
-      -webkit-line-break: after-white-space;
-      -webkit-user-select: auto;
-    }
-    :where([draggable="true"]) {
-      -webkit-user-drag: element;
-    }
-    /* end */
-    html {
-      font-family: sans-serif;
-    }
-    body {
-      margin: 0;
-      padding: 0;
-      width: 100vw;
-      height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      color: black;
-      background: #eee;
-      text-align: center;
-    }
-    #new {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-    }
-    #new > * {
-      margin: 1em;
-      width: 100%;
-    }
-    input, textarea {
-      padding: .5em;
-      font-family: inherit;
-      font-size: inherit;
-      border: none;
-    }
-    a {
-      color: inherit;
-      text-decoration: none;
-    }
-    footer {
-      position: absolute;
-      width: 100vw;
-      bottom: 0;
-      display: flex;
-      flex-direction: row;
-      justify-content: space-between;
-    }
-    @media (prefers-color-scheme: dark) {
-      body {
-        color: #ccc;
-        background: black;
-      }
-      input, textarea {
-        color: white;
-        background: #333;
-      }
-    }
   </style>
 </head>
 <body>
-  <h1 id="title"></h1>
-  <p id="content"></p>
-  <a id="link"></a>
-  <section id="new" style="display:none">
-    <input id="new-title" type="text" placeholder="Title" />
-    <textarea id="new-content" placeholder="Content"></textarea>
+  <main class="container">
     <div>
-      <input id="new-link" type="text" placeholder="Link" />
-      <input id="new-link-text" type="text" placeholder="Link text" />
+      <h1 id="title"></h1>
+      <article id="imagecontainer">
+        <img id="image" style="width:100%;" />
+      </article>
+      <p id="content"></p>
+      <a id="link"></a>
     </div>
-    <div id="output" style="display:none">
+    <section id="input" style="display:none">
+      <input id="new-title" type="text" placeholder="Title" />
+      <input id="new-image" type="text" placeholder="Optional Image URL" />
+      <textarea id="new-content" placeholder="Content"></textarea>
+      <div class="grid">
+        <input id="new-link" type="text" placeholder="Link" />
+        <input id="new-link-text" type="text" placeholder="Link Button Text" />
+      </div>
+      <p><small>ℹ️ Nothing is sent to a server or saved</small></p>
+    </section>
+    <section id="output" style="display:none">
+      <h4>Your Link</h4>
       <input id="result" type="text" readonly />
-      <button id="copy">📋</button>
-      <button id="open">↗️</button>
-    </div>
-  </section>
-  <footer><div>Logo</div><div id="reset">Make your own &olarr;</div></footer>
+      <div class="grid">
+        <button id="copy">📋 Copy to Clipboard</button>
+        <a id="open" target="_blank"><button>↗️ Open in New Window</button></a>
+      </div>
+    </section>
+  </main>
+  <footer id="faq" class="container">
+    <details>
+      <summary>Why does this page say this?</summary>
+      <p>
+        The content on this page lives entirely in the web address.
+        The person who sent you here wrote what's on this page.
+        Anybody can create and share one of these links.
+        This is a simple way to create small informational webpages without needing to host anything yourself.
+      </p>
+      <span id="reset" role="button">⮪ Make Your Own</button>
+    </details>
+  </footer>
   <script>
-    const title = document.getElementById('new-title');
-    const content = document.getElementById('new-content');
-    const link = document.getElementById('new-link');
-    const linktext = document.getElementById('new-link-text');
-    const output = document.getElementById('output');
-    const result = document.getElementById('result');
-    const copy = document.getElementById('copy');
-    const open = document.getElementById('open');
+    var title = document.getElementById('new-title');
+    var image = document.getElementById('new-image');
+    var content = document.getElementById('new-content');
+    var link = document.getElementById('new-link');
+    var linktext = document.getElementById('new-link-text');
+    var input = document.getElementById('input');
+    var output = document.getElementById('output');
+    var faq = document.getElementById('faq');
+    var result = document.getElementById('result');
+    var copy = document.getElementById('copy');
+    var open = document.getElementById('open');
+
     document.addEventListener('DOMContentLoaded', e => {
-      const params = new Proxy(new URLSearchParams(window.location.search), {
-        "get": (searchParams, prop) => searchParams.get(prop),
-      });
-      if (!params.title && !params.content && !params.link) {
-        document.getElementById('new').style.display = 'flex';
-      } else {
-        document.getElementById('title').innerText = params.title;
-        document.getElementById('content').innerHTML = params.content;
-        document.getElementById('link').href = params.link;
-        document.getElementById('link').innerText = params.linktext;
-      }
-      document.getElementById('reset').addEventListener('click', e => {
-        title.value = '';
-        content.value = '';
-        link.value = '';
-        linktext.value = '';
-        update();
-      });
+
       title.addEventListener('change', e => update());
       title.addEventListener('keyup', e => update());
+      var imagechange;
+      image.addEventListener('change', e => {
+        clearTimeout(imagechange);
+        imagechange = setTimeout(() => update(), 400);
+      });
+      image.addEventListener('keyup', e => {
+        clearTimeout(imagechange);
+        imagechange = setTimeout(() => update(), 400);
+      });
       content.addEventListener('change', e => update());
       content.addEventListener('keyup', e => update());
       link.addEventListener('change', e => update());
@@ -173,23 +87,99 @@
         result.select();
         document.execCommand('copy');
       });
-      open.addEventListener('click', e => {
-        window.open(result.value);
+      document.getElementById('reset').addEventListener('click', e => reset());
+
+      // check for params on first load
+      const params = new Proxy(new URLSearchParams(window.location.search), {
+        "get": (searchParams, prop) => searchParams.get(prop),
       });
-      update();
+      if (params.title || params.content || params.link) {
+        title.value = params.title;
+        image.value = params.image;
+        content.value = params.content;
+        link.value = params.link;
+        linktext.value = params.linktext;
+        show();
+      } else {
+        reset();
+      }
+
     });
-    function update() {
+
+    function reset() {
+      title.value = '';
+      image.value = '';
+      content.value = '';
+      link.value = '';
+      linktext.value = '';
+      window.location.href.replace(window.location.search, '');
+      document.getElementById('title').innerText = 'What would you like to say?';
+      document.getElementById('imagecontainer').style.display = 'none';
+      document.getElementById('content').innerText = '';
+      update();
+      input.style.display = 'block';
+      output.style.display = 'none';
+      faq.style.display = 'none';
+    }
+
+    function show() {
+      document.getElementById('title').innerText = title.value;
+      document.getElementById('image').src = image.value;
+      document.getElementById('imagecontainer').style.display = image.value ? 'block' : 'none';
+      document.getElementById('content').innerText = content.value;
+      document.getElementById('link').innerHTML = link.value ? '<button>' + linktext.value + '</button>' : '';
+      document.getElementById('link').href = link.value;
+      input.style.display = 'none';
+      output.style.display = 'none';
+      faq.style.display = 'block';
+    }
+
+    async function update() {
+
       if (title.value || content.value || link.value) {
-        output.style.display = 'block';
+        if (image.value) { // check if image url is valid
+          try {
+            console.log('Checking ' + image.value + '...');
+            const res = await fetch(image.value); // even follows redirects. amazing.
+            const buff = await res.blob();
+            if (buff.type.startsWith('image/')) {
+              image.setAttribute('aria-invalid', 'false');
+            } else {
+              image.setAttribute('aria-invalid', 'true');
+            }
+          }
+          catch (e) { // invalid url, also catches CORS errors
+            image.setAttribute('aria-invalid', 'true');
+          }
+        } else { // no url
+          image.setAttribute('aria-invalid', '');
+        }
+        if (link.value) {
+          let valid = /^((https?|mailto):\/\/)?[a-z0-9-\.]+\.[a-z]/.test(link.value);
+          link.setAttribute('aria-invalid', !valid);
+        } else { // no url
+          link.setAttribute('aria-invalid', '');
+        }
         result.value = window.location.origin + '/?';
-        let values = {"title": title.value, "content": content.value, "link": link.value, "linktext": linktext.value || "Learn more"};
+        let values = {"title": title.value, "image": image.value, "content": content.value, "link": link.value, "linktext": linktext.value};
         for (let [param, value] of Object.entries(values)) {
           if (value) result.value += `${param}=${value.trim().escapeHtml().replace(/\n/g, '<br>')}&`;
         }
         result.value = result.value.slice(0, -1);
+        open.href = result.value;
+        output.style.display = 'block';
       } else {
         output.style.display = 'none';
       }
+    }
+    function isValidUrl(str) {
+      let url;  
+      try {
+        url = new URL(str);
+      } catch (e) {
+        return false;  
+      }
+      return url.protocol === "http:" || url.protocol === "https:";
     }
     String.prototype.escapeHtml = function() {
       return this.replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;').replaceAll("'", '&apos;');
