@@ -13,31 +13,36 @@
 <body>
   <main class="container">
     <div>
-      <h1 id="title"></h1>
-      <article id="imagecontainer">
-        <img id="image" style="width:100%;" />
+      <article style="max-width:900px;margin:auto;">
+        <header>
+          <h1 id="title" style="margin-bottom:0"></h1>
+        </header>
+        <section id="content">
+          <img id="image" style="width:100%;" />
+          <p id="description"></p>
+          <a id="link" target="_blank"></a>
+        </section>
+        <section id="input" style="display:none">
+          <input id="new-title" type="text" placeholder="Title" />
+          <input id="new-image" type="text" placeholder="Optional Image URL" />
+          <textarea id="new-description" placeholder="Content"></textarea>
+          <div class="grid">
+            <input id="new-link" type="text" placeholder="Link" />
+            <input id="new-link-text" type="text" placeholder="Link Button Text" />
+          </div>
+          <p><small>ℹ️ Nothing is sent to a server or saved</small></p>
+        </section>
+        <section id="output" style="display:none">
+          <h4>Your Link</h4>
+          <input id="result" type="text" readonly />
+          <div class="grid">
+            <button id="copy">📋 Copy to Clipboard</button>
+            <a id="open" target="_blank"><button>↗️ Open in New Window</button></a>
+          </div>
+        </section>
       </article>
-      <p id="content"></p>
-      <a id="link"></a>
     </div>
-    <section id="input" style="display:none">
-      <input id="new-title" type="text" placeholder="Title" />
-      <input id="new-image" type="text" placeholder="Optional Image URL" />
-      <textarea id="new-content" placeholder="Content"></textarea>
-      <div class="grid">
-        <input id="new-link" type="text" placeholder="Link" />
-        <input id="new-link-text" type="text" placeholder="Link Button Text" />
-      </div>
-      <p><small>ℹ️ Nothing is sent to a server or saved</small></p>
-    </section>
-    <section id="output" style="display:none">
-      <h4>Your Link</h4>
-      <input id="result" type="text" readonly />
-      <div class="grid">
-        <button id="copy">📋 Copy to Clipboard</button>
-        <a id="open" target="_blank"><button>↗️ Open in New Window</button></a>
-      </div>
-    </section>
+    
   </main>
   <footer id="faq" class="container">
     <details>
@@ -54,7 +59,7 @@
   <script>
     var title = document.getElementById('new-title');
     var image = document.getElementById('new-image');
-    var content = document.getElementById('new-content');
+    var description = document.getElementById('new-description');
     var link = document.getElementById('new-link');
     var linktext = document.getElementById('new-link-text');
     var input = document.getElementById('input');
@@ -77,8 +82,8 @@
         clearTimeout(imagechange);
         imagechange = setTimeout(() => update(), 400);
       });
-      content.addEventListener('change', e => update());
-      content.addEventListener('keyup', e => update());
+      description.addEventListener('change', e => update());
+      description.addEventListener('keyup', e => update());
       link.addEventListener('change', e => update());
       link.addEventListener('keyup', e => update());
       linktext.addEventListener('change', e => update());
@@ -93,10 +98,10 @@
       const params = new Proxy(new URLSearchParams(window.location.search), {
         "get": (searchParams, prop) => searchParams.get(prop),
       });
-      if (params.title || params.content || params.link) {
+      if (params.title || params.description || params.link) {
         title.value = params.title;
         image.value = params.image;
-        content.value = params.content;
+        description.value = params.description;
         link.value = params.link;
         linktext.value = params.linktext;
         show();
@@ -109,13 +114,13 @@
     function reset() {
       title.value = '';
       image.value = '';
-      content.value = '';
+      description.value = '';
       link.value = '';
       linktext.value = '';
       window.location.href.replace(window.location.search, '');
-      document.getElementById('title').innerText = 'What would you like to say?';
-      document.getElementById('imagecontainer').style.display = 'none';
-      document.getElementById('content').innerText = '';
+      document.getElementById('title').innerText = 'What would you like your page to say?';
+      document.getElementById('description').innerText = '';
+      document.getElementById('content').style.display = 'none';
       update();
       input.style.display = 'block';
       output.style.display = 'none';
@@ -125,10 +130,10 @@
     function show() {
       document.getElementById('title').innerText = title.value;
       document.getElementById('image').src = image.value;
-      document.getElementById('imagecontainer').style.display = image.value ? 'block' : 'none';
-      document.getElementById('content').innerText = content.value;
+      document.getElementById('description').innerText = description.value;
       document.getElementById('link').innerHTML = link.value ? '<button>' + linktext.value + '</button>' : '';
       document.getElementById('link').href = link.value;
+      document.getElementById('content').style.display = 'block';
       input.style.display = 'none';
       output.style.display = 'none';
       faq.style.display = 'block';
@@ -136,7 +141,7 @@
 
     async function update() {
 
-      if (title.value || content.value || link.value) {
+      if (title.value || description.value || link.value) {
         if (image.value) { // check if image url is valid
           try {
             console.log('Checking ' + image.value + '...');
@@ -161,7 +166,7 @@
           link.setAttribute('aria-invalid', '');
         }
         result.value = window.location.origin + '/?';
-        let values = {"title": title.value, "image": image.value, "content": content.value, "link": link.value, "linktext": linktext.value};
+        let values = {"title": title.value, "image": image.value, "description": description.value, "link": link.value, "linktext": linktext.value};
         for (let [param, value] of Object.entries(values)) {
           if (value) result.value += `${param}=${value.trim().escapeHtml().replace(/\n/g, '<br>')}&`;
         }
