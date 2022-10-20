@@ -154,6 +154,7 @@
       document.getElementById('description').innerText = 'Blah';
       document.getElementById('content').style.display = 'none';
       update();
+      example.style.display = 'show';
       input.style.display = 'block';
       output.style.display = 'none';
       faq.style.display = 'none';
@@ -167,6 +168,7 @@
       document.getElementById('link').innerHTML = link.value ? '<button>' + (linktext.value ? linktext.value : link.value) + '</button>' : '';
       document.getElementById('link').href = link.value;
       document.getElementById('content').style.display = 'block';
+      example.style.display = 'none';
       input.style.display = 'none';
       output.style.display = 'none';
       faq.style.display = 'block';
@@ -201,6 +203,7 @@
         }
         result.value = result.value.slice(0, -1);
         open.href = result.value;
+        example.style.display = 'none';
         output.style.display = 'block';
       } else {
         example.style.display = 'block';
