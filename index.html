@@ -177,15 +177,6 @@
       }
     }
 
-    function isValidUrl(str) {
-      let url;  
-      try {
-        url = new URL(str);
-      } catch (e) {
-        return false;  
-      }
-      return url.protocol === "http:" || url.protocol === "https:";
-    }
     String.prototype.escapeHtml = function() {
       return this.replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;').replaceAll("'", '&apos;');
     }
