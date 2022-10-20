@@ -28,13 +28,17 @@
         </section>
         <section id="input" style="display:none">
           <input id="new-title" type="text" placeholder="Title" />
-          <input id="new-image" type="text" placeholder="Optional Image URL" />
+          <div class="grid">
+            <input id="new-image" type="text" placeholder="Optional Image URL" />
+            <input id="new-image-alt" type="text" placeholder="Description of the Image" />
+          </div>
           <textarea id="new-description" placeholder="Content"></textarea>
           <div class="grid">
             <input id="new-link" type="text" placeholder="Link" />
             <input id="new-link-text" type="text" placeholder="Link Button Text" />
           </div>
           <p><small>ℹ️ Nothing is sent to a server or saved</small></p>
+          <a id="example" href="/?title=This%20is%20an%20Example%20Page&image=https%3A%2F%2Flive.staticflickr.com%2F65535%2F52259221868_e86daccb7d_6k.jpg&alt=An%20undulating%2C%20translucent%20star-forming%20region%20in%20the%20Carina%20Nebula%20is%20shown%20in%20this%20Webb%20image%2C%20hued%20in%20ambers%20and%20blues%3B%20foreground%20stars%20with%20diffraction%20spikes%20can%20be%20seen%2C%20as%20can%20a%20speckling%20of%20background%20points%20of%20light%20through%20the%20cloudy%20nebula&description=Anything%20that%20you%20want%20to%20say%20will%20be%20encoded%20into%20the%20link%20itself%20for%20you%20to%20share%20with%20anybody.&link=%2F&linktext=Make%20Your%20Own!"><button class="secondary">See an Example ↗</button></a>
         </section>
         <section id="output" style="display:none">
           <h4>Your Link</h4>
@@ -64,10 +68,12 @@
   <script>
     var title = document.getElementById('new-title');
     var image = document.getElementById('new-image');
+    var alt = document.getElementById('new-image-alt');
     var description = document.getElementById('new-description');
     var link = document.getElementById('new-link');
     var linktext = document.getElementById('new-link-text');
     var input = document.getElementById('input');
+    var example = document.getElementById('example');
     var output = document.getElementById('output');
     var faq = document.getElementById('faq');
     var result = document.getElementById('result');
@@ -106,6 +112,7 @@
       if (params.title || params.description || params.link) {
         title.value = params.title;
         image.value = params.image;
+        alt.value = params.alt;
         description.value = params.description;
         link.value = params.link;
         linktext.value = params.linktext;
@@ -119,6 +126,7 @@
     function reset() {
       title.value = '';
       image.value = '';
+      alt.value = '';
       description.value = '';
       link.value = '';
       linktext.value = '';
@@ -136,6 +144,7 @@
     function show() {
       document.getElementById('title').innerText = title.value;
       document.getElementById('image').src = image.value;
+      document.getElementById('image').alt = alt.value;
       document.getElementById('description').innerText = description.value;
       document.getElementById('link').innerHTML = link.value ? '<button>' + (linktext.value ? linktext.value : link.value) + '</button>' : '';
       document.getElementById('link').href = link.value;
@@ -147,6 +156,7 @@
 
     async function update() {
       if (title.value || description.value || link.value) {
+        example.style.display = 'none';
         if (!image.value) {
           image.setAttribute('aria-invalid', '');
         } else {
@@ -167,7 +177,7 @@
           link.setAttribute('aria-invalid', !valid);
         }
         result.value = window.location.origin + '/?';
-        let values = {"title": title.value, "image": image.value, "description": description.value, "link": link.value, "linktext": linktext.value};
+        let values = {"title": title.value, "image": image.value, "alt": alt.value, "description": description.value, "link": link.value, "linktext": linktext.value};
         for (let [param, value] of Object.entries(values)) {
           if (value) result.value += `${param}=${encodeURIComponent(value.trim().escapeHtml().replace(/\n/g, '<br>'))}&`;
         }
@@ -175,6 +185,7 @@
         open.href = result.value;
         output.style.display = 'block';
       } else {
+        example.style.display = 'block';
         output.style.display = 'none';
       }
     }
