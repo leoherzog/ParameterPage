@@ -7,8 +7,7 @@
   <meta name="keywords" content="" />
   <meta name="author" content="Leo Herzog | herzog.tech" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.css" />
-  <style>
-  </style>
+  <title>Parameter Page — A custom landing page, powered by URL query parameters</title>
 </head>
 <body>
   <main class="container">
@@ -141,7 +140,6 @@
     }
 
     async function update() {
-
       if (title.value || description.value || link.value) {
         if (image.value) { // check if image url is valid
           try {
@@ -178,6 +176,7 @@
         output.style.display = 'none';
       }
     }
+
     function isValidUrl(str) {
       let url;  
       try {
