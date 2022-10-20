@@ -161,8 +161,8 @@
     }
 
     function show() {
-      document.getElementById('title').innerText = title.value;
-      document.getElementById('description').innerText = description.value;
+      document.getElementById('title').innerHTML = title.value;
+      document.getElementById('description').innerHTML = description.value;
       document.getElementById('image').src = image.value;
       document.getElementById('image').alt = alt.value;
       document.getElementById('link').innerHTML = link.value ? '<button>' + (linktext.value ? linktext.value : link.value) + '</button>' : '';
