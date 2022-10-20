@@ -142,28 +142,24 @@
 
     async function update() {
       if (title.value || description.value || link.value) {
-        if (image.value) { // check if image url is valid
+        if (!image.value) {
+          image.setAttribute('aria-invalid', '');
+        } else {
           try {
             console.log('Checking ' + image.value + '...');
             const res = await fetch(image.value); // even follows redirects. amazing.
             const buff = await res.blob();
-            if (buff.type.startsWith('image/')) {
-              image.setAttribute('aria-invalid', 'false');
-            } else {
-              image.setAttribute('aria-invalid', 'true');
-            }
+            image.setAttribute('aria-invalid', !buff.type.startsWith('image/'));
           }
           catch (e) { // invalid url, also catches CORS errors
             image.setAttribute('aria-invalid', 'true');
           }
-        } else { // no url
-          image.setAttribute('aria-invalid', '');
         }
-        if (link.value) {
+        if (!link.value) {
+          link.setAttribute('aria-invalid', '');
+        } else {
           let valid = /^((https?|mailto):\/\/)?[a-z0-9-\.]+\.[a-z]/.test(link.value);
           link.setAttribute('aria-invalid', !valid);
-        } else { // no url
-          link.setAttribute('aria-invalid', '');
         }
         result.value = window.location.origin + '/?';
         let values = {"title": title.value, "image": image.value, "description": description.value, "link": link.value, "linktext": linktext.value};
