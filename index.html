@@ -3,11 +3,11 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0" />
-  <meta name="description" content="📃 A custom landing page, powered by URL query parameters" />
+  <meta name="description" content="📃 A custom webpage, powered by URL query parameters" />
   <meta name="keywords" content="" />
   <meta name="author" content="Leo Herzog | herzog.tech" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.css" />
-  <title>Parameter Page — A custom landing page, powered by URL query parameters</title>
+  <title>Parameter Page — A custom webpage, powered by URL query parameters</title>
 </head>
 <body>
   <main class="container">
@@ -51,7 +51,7 @@
         The content on this page lives entirely in the web address.
         The person who sent you here wrote what's on this page.
         Anybody can create and share one of these links.
-        This is a simple way to create small informational webpages without needing to host anything yourself.
+        This is a simple way to create small webpages without needing to host anything yourself.
       </p>
       <span id="reset" role="button">⮪ Make Your Own</button>
     </details>
@@ -117,7 +117,7 @@
       description.value = '';
       link.value = '';
       linktext.value = '';
-      window.location.href.replace(window.location.search, '');
+      window.history.replaceState({}, document.title, '/');
       document.getElementById('title').innerText = 'What would you like your page to say?';
       document.getElementById('description').innerText = '';
       document.getElementById('content').style.display = 'none';
