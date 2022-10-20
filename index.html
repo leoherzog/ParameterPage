@@ -117,7 +117,7 @@
       description.value = '';
       link.value = '';
       linktext.value = '';
-      window.history.replaceState({}, document.title, '/');
+      window.history.replaceState(null, document.title, window.location.pathname);
       document.getElementById('title').innerText = 'What would you like your page to say?';
       document.getElementById('description').innerText = '';
       document.getElementById('content').style.display = 'none';
