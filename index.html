@@ -167,7 +167,7 @@
         result.value = window.location.origin + '/?';
         let values = {"title": title.value, "image": image.value, "description": description.value, "link": link.value, "linktext": linktext.value};
         for (let [param, value] of Object.entries(values)) {
-          if (value) result.value += `${param}=${value.trim().escapeHtml().replace(/\n/g, '<br>')}&`;
+          if (value) result.value += `${param}=${encodeURIComponent(value.trim().escapeHtml().replace(/\n/g, '<br>'))}&`;
         }
         result.value = result.value.slice(0, -1);
         open.href = result.value;
