@@ -28,12 +28,22 @@
         </section>
         <section id="input" style="display:none">
           <input id="new-title" type="text" placeholder="Title" />
-          <div class="grid">
-            <input id="new-image" type="text" placeholder="Optional Image URL" />
-            <input id="new-image-alt" type="text" placeholder="Description of the Image" />
-          </div>
           <textarea id="new-description" placeholder="Content"></textarea>
-          <div class="grid">
+          <fieldset>
+            <label for="image-toggle">
+              <input type="checkbox" id="image-toggle" role="switch">
+              Include Image
+            </label>
+            <label for="link-toggle">
+              <input type="checkbox" id="link-toggle" role="switch">
+              Include Button Link
+            </label>
+          </fieldset>
+          <div id="new-image-group" class="grid" style="display:none">
+            <input id="new-image" type="text" placeholder="Image URL" />
+            <textarea id="new-image-alt" type="text" placeholder="Description of the Image"></textarea>
+          </div>
+          <div id="new-link-group" class="grid" style="display:none">
             <input id="new-link" type="text" placeholder="Link" />
             <input id="new-link-text" type="text" placeholder="Link Button Text" />
           </div>
@@ -67,9 +77,9 @@
   </footer>
   <script>
     var title = document.getElementById('new-title');
+    var description = document.getElementById('new-description');
     var image = document.getElementById('new-image');
     var alt = document.getElementById('new-image-alt');
-    var description = document.getElementById('new-description');
     var link = document.getElementById('new-link');
     var linktext = document.getElementById('new-link-text');
     var input = document.getElementById('input');
@@ -84,6 +94,14 @@
 
       title.addEventListener('change', e => update());
       title.addEventListener('keyup', e => update());
+      description.addEventListener('change', e => update());
+      description.addEventListener('keyup', e => update());
+      document.getElementById('image-toggle').addEventListener('change', e => {
+        document.getElementById('new-image-group').style.display = e.target.checked ? 'grid' : 'none';
+      });
+      document.getElementById('link-toggle').addEventListener('change', e => {
+        document.getElementById('new-link-group').style.display = e.target.checked ? 'grid' : 'none';
+      });
       var imagechange;
       image.addEventListener('change', e => {
         clearTimeout(imagechange);
@@ -93,8 +111,6 @@
         clearTimeout(imagechange);
         imagechange = setTimeout(() => update(), 400);
       });
-      description.addEventListener('change', e => update());
-      description.addEventListener('keyup', e => update());
       link.addEventListener('change', e => update());
       link.addEventListener('keyup', e => update());
       linktext.addEventListener('change', e => update());
@@ -109,11 +125,11 @@
       const params = new Proxy(new URLSearchParams(window.location.search), {
         "get": (searchParams, prop) => searchParams.get(prop),
       });
-      if (params.title || params.description || params.link) {
+      if (params.title || params.description) {
         title.value = params.title;
+        description.value = params.description;
         image.value = params.image;
         alt.value = params.alt;
-        description.value = params.description;
         link.value = params.link;
         linktext.value = params.linktext;
         show();
@@ -125,9 +141,9 @@
 
     function reset() {
       title.value = '';
+      description.value = '';
       image.value = '';
       alt.value = '';
-      description.value = '';
       link.value = '';
       linktext.value = '';
       window.history.replaceState(null, document.title, window.location.pathname);
@@ -143,9 +159,9 @@
 
     function show() {
       document.getElementById('title').innerText = title.value;
+      document.getElementById('description').innerText = description.value;
       document.getElementById('image').src = image.value;
       document.getElementById('image').alt = alt.value;
-      document.getElementById('description').innerText = description.value;
       document.getElementById('link').innerHTML = link.value ? '<button>' + (linktext.value ? linktext.value : link.value) + '</button>' : '';
       document.getElementById('link').href = link.value;
       document.getElementById('content').style.display = 'block';
@@ -155,7 +171,7 @@
     }
 
     async function update() {
-      if (title.value || description.value || link.value) {
+      if (title.value || description.value) {
         example.style.display = 'none';
         if (!image.value) {
           image.setAttribute('aria-invalid', '');
