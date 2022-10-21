@@ -92,8 +92,10 @@
   <script>
     var title = document.getElementById('new-title');
     var description = document.getElementById('new-description');
+    var imagetoggle = document.getElementById('image-toggle');
     var image = document.getElementById('new-image');
     var alt = document.getElementById('new-image-alt');
+    var linktoggle = document.getElementById('link-toggle');
     var link = document.getElementById('new-link');
     var linktext = document.getElementById('new-link-text');
     var input = document.getElementById('input');
@@ -117,11 +119,13 @@
       title.addEventListener('keyup', e => update());
       description.addEventListener('change', e => update());
       description.addEventListener('keyup', e => update());
-      document.getElementById('image-toggle').addEventListener('change', e => {
+      imagetoggle.addEventListener('change', e => {
         document.getElementById('new-image-group').style.display = e.target.checked ? 'grid' : 'none';
+        update();
       });
-      document.getElementById('link-toggle').addEventListener('change', e => {
+      linktoggle.addEventListener('change', e => {
         document.getElementById('new-link-group').style.display = e.target.checked ? 'grid' : 'none';
+        update();
       });
       var imagechange;
       image.addEventListener('change', e => {
@@ -227,7 +231,15 @@
           link.setAttribute('aria-invalid', !valid);
         }
         result.value = window.location.origin + '/?';
-        let values = {"title": title.value, "description": description.value, "image": image.value, "alt": alt.value, "link": link.value, "linktext": linktext.value};
+        let values = {"title": title.value, "description": description.value};
+        if (imagetoggle.checked) {
+          values.image = image.value;
+          values.alt = alt.value;
+        }
+        if (linktoggle.checked) {
+          values.link = link.value;
+          values.linktext = linktext.value;
+        }
         for (let [param, value] of Object.entries(values)) {
           if (value) result.value += `${param}=${encodeURIComponent(value.trim().escapeHtml().replace(/\n/g, '<br>'))}&`;
         }
