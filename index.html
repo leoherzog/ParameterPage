@@ -7,6 +7,7 @@
   <meta name="keywords" content="landing page, confirmation page, homepage, custom, hosting, dynamic, static site" />
   <meta name="author" content="Leo Herzog | herzog.tech" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css" />
+  <script src="https://cdn.jsdelivr.net/npm/qrious@4/dist/qrious.min.js"></script>
   <title>Parameter Page — A custom webpage, powered by URL query parameters</title>
   <style>
   p:empty, p > img[src=""] {
@@ -67,6 +68,7 @@
           <div class="grid">
             <button id="copy">📋 Copy to Clipboard</button>
             <a id="open" target="_blank"><button>↗️ Open in New Window</button></a>
+            <button id="qr">⬇️ Download QR Code</button>
           </div>
         </section>
         <p style="float:right"><small><a href="https://herzog.tech/" target="_blank">💙</a></small></p>
@@ -137,6 +139,17 @@
       copy.addEventListener('click', e => {
         result.select();
         document.execCommand('copy');
+      });
+      document.getElementById('qr').addEventListener('click', e => {
+        let code = new QRious({
+          "value": result.value,
+          "size": 1000,
+          "padding": 50
+        });
+        let download = document.createElement('a');
+        download.download = (title.value ? title.value.trim().toLowerCase().substring(0, 20) : location.host) + '-qr.png';
+        download.href = code.toDataURL('image/png');
+        download.click();
       });
       document.getElementById('reset').addEventListener('click', e => reset());
 
