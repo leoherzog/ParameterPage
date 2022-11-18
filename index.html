@@ -249,15 +249,17 @@
         if (!image.value) {
           image.setAttribute('aria-invalid', '');
         } else {
-          try {
-            console.log('Checking ' + image.value + '...');
-            const res = await fetch(image.value); // even follows redirects. amazing.
-            const buff = await res.blob();
-            image.setAttribute('aria-invalid', !buff.type.startsWith('image/'));
+          console.log('Checking ' + image.value + '...');
+          var imagevalidator = new Image();
+          imagevalidator.onload = function() {
+            if (imagevalidator.width > 0) {
+              image.setAttribute('aria-invalid', 'false');
+            }
           }
-          catch (e) { // invalid url, also catches CORS errors
+          imagevalidator.onerror = function() {
             image.setAttribute('aria-invalid', 'true');
           }
+          imagevalidator.src = image.value;
         }
         if (!link.value) {
           link.setAttribute('aria-invalid', '');
