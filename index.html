@@ -41,6 +41,9 @@
   p:empty, p > img[src=""] {
     display: none;
   }
+  #remaining-description {
+    position: relative;
+  }
   </style>
 
 </head>
@@ -70,8 +73,11 @@
         </section>
         <section id="input" style="display:none">
           <input id="new-title" type="text" placeholder="Title" maxlength="100" />
-          <textarea id="new-description" placeholder="Content" maxlength="600"></textarea>
-          <small><a href="https://marked.js.org/demo/" target="_blank" class="secondary">Markdown</a> is supported</small>
+          <textarea id="new-description" placeholder="Content" maxlength="600" style="margin-bottom:0"></textarea>
+          <fieldset class="container">
+            <small><a href="https://marked.js.org/demo/" target="_blank" class="secondary">Markdown</a> is supported</small>
+            <small><code id="remaining-description" style="float:right;"></code></small>
+          </fieldset>
           <fieldset>
             <label for="image-toggle">
               <input type="checkbox" id="image-toggle" role="switch">
@@ -208,6 +214,7 @@
     function reset() {
       title.value = '';
       description.value = '';
+      document.getElementById('remaining-description').innerText = description.maxLength;
       image.value = '';
       alt.value = '';
       link.value = '';
@@ -241,6 +248,7 @@
     async function update() {
       if (title.value || description.value) {
         example.style.display = 'none';
+        document.getElementById('remaining-description').innerText = description.maxLength - description.value.length;
         if (!image.value) {
           image.setAttribute('aria-invalid', '');
         } else {
