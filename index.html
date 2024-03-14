@@ -1,294 +1,299 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0" />
+    <meta name="description" content="📃 A custom webpage, powered by URL query parameters" />
+    <meta name="keywords" content="landing page, confirmation page, homepage, custom, hosting, dynamic, static site" />
+    <meta name="author" content="Leo Herzog | herzog.tech" />
 
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0" />
-  <meta name="description" content="📃 A custom webpage, powered by URL query parameters" />
-  <meta name="keywords" content="landing page, confirmation page, homepage, custom, hosting, dynamic, static site" />
-  <meta name="author" content="Leo Herzog | herzog.tech" />
+    <meta name="theme-color" content="#18232C" />
+    <meta name="msapplication-navbutton-color" content="#18232C" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="#11191F" />
 
-  <meta name="theme-color" content="#18232C" />
-  <meta name="msapplication-navbutton-color" content="#18232C" />
-  <meta name="apple-mobile-web-app-status-bar-style" content="#11191F" />
+    <link rel="icon" sizes="16x16" href="https://parameter.page/img/parameterpage-icon-16.png" />
+    <link rel="icon" sizes="32x32" href="https://parameter.page/img/parameterpage-icon-32.png" />
+    <link rel="icon" sizes="96x96" href="https://parameter.page/img/parameterpage-icon-96.png" />
+    <link rel="icon" sizes="180x180" href="https://parameter.page/img/parameterpage-icon-180.png" />
+    <link rel="icon" sizes="512x512" href="https://parameter.page/img/parameterpage-icon-512.png" />
+    <link rel="apple-touch-icon" href="https://parameter.page/img/parameterpage-icon-512.png" />
 
-  <link rel="icon" sizes="16x16" href="https://parameter.page/img/parameterpage-icon-16.png" />
-  <link rel="icon" sizes="32x32" href="https://parameter.page/img/parameterpage-icon-32.png" />
-  <link rel="icon" sizes="96x96" href="https://parameter.page/img/parameterpage-icon-96.png" />
-  <link rel="icon" sizes="180x180" href="https://parameter.page/img/parameterpage-icon-180.png" />
-  <link rel="icon" sizes="512x512" href="https://parameter.page/img/parameterpage-icon-512.png" />
-  <link rel="apple-touch-icon" href="https://parameter.page/img/parameterpage-icon-512.png">
+    <meta property="og:url" content="https://parameter.page" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Parameter Page — A custom webpage, powered by URL query parameters" />
+    <meta property="og:description" content="📃 A custom webpage, powered by URL query parameters" />
+    <meta property="og:image" content="https://parameter.page/img/parameterpage-social.png" />
 
-  <meta property="og:url" content="https://parameter.page">
-  <meta property="og:type" content="website">
-  <meta property="og:title" content="Parameter Page — A custom webpage, powered by URL query parameters">
-  <meta property="og:description" content="📃 A custom webpage, powered by URL query parameters">
-  <meta property="og:image" content="https://parameter.page/img/parameterpage-social.png">
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta property="twitter:domain" content="parameter.page" />
+    <meta property="twitter:url" content="https://parameter.page" />
+    <meta name="twitter:title" content="Parameter Page — A custom webpage, powered by URL query parameters" />
+    <meta name="twitter:description" content="📃 A custom webpage, powered by URL query parameters" />
+    <meta name="twitter:image" content="https://parameter.page/img/parameterpage-social.png" />
 
-  <meta name="twitter:card" content="summary_large_image">
-  <meta property="twitter:domain" content="parameter.page">
-  <meta property="twitter:url" content="https://parameter.page">
-  <meta name="twitter:title" content="Parameter Page — A custom webpage, powered by URL query parameters">
-  <meta name="twitter:description" content="📃 A custom webpage, powered by URL query parameters">
-  <meta name="twitter:image" content="https://parameter.page/img/parameterpage-social.png">
+    <title>Parameter Page — A custom webpage, powered by URL query parameters</title>
 
-  <title>Parameter Page — A custom webpage, powered by URL query parameters</title>
-
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css" />
-  <script src="https://cdn.jsdelivr.net/npm/marked@4/marked.min.js"></script>
-  <script async src="https://cdn.jsdelivr.net/npm/qrious@4/dist/qrious.min.js"></script>
-  <style>
-  p:empty, p > img[src=""] {display: none;}
-  textarea {resize: vertical;}
-  </style>
-
-</head>
-<body>
-
-  <div style="position:absolute;top:0px;left:8px;">
-    <span id="theme" style="font-size:16px" aria-label="Toggle light and dark mode">☀️</span>
-  </div>
-  
-  <div style="position:absolute;top:0px;right:8px;">
-    <a href="https://github.com/leoherzog/ParameterPage" class="contrast" aria-label="Parameter Page GitHub repository">
-      <svg aria-hidden="true" focusable="false" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512" height="20px"><path fill="currentColor" d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"></path></svg>
-    </a>
-  </div>
-
-  <main class="container">
-    <div>
-      <article style="max-width:900px;margin:10vh auto;">
-        <header class="headings">
-          <h1 id="title" style="margin-bottom:0"></h1>
-          <a id="example" href="/?title=This%20is%20an%20Example%20Page&description=**Anything**%20that%20you%20want%20to%20say%20will%20be%20encoded%20_into%20the%20link%20itself_%20for%20you%20to%20share.&image=https%3A%2F%2Flive.staticflickr.com%2F65535%2F52259221868_e86daccb7d_6k.jpg&alt=An%20undulating%2C%20translucent%20star-forming%20region%20in%20the%20Carina%20Nebula%20is%20shown%20in%20this%20Webb%20image%2C%20hued%20in%20ambers%20and%20blues%3B%20foreground%20stars%20with%20diffraction%20spikes%20can%20be%20seen%2C%20as%20can%20a%20speckling%20of%20background%20points%20of%20light%20through%20the%20cloudy%20nebula&link=%2F&linktext=Make%20Your%20Own!">See an Example</a>
-        </header>
-        <section id="content">
-          <p><img id="image" style="width:100%;" /></p>
-          <p id="description"></p>
-          <p><a id="link" target="_blank"></a></p>
-        </section>
-        <section id="input" style="display:none">
-          <input id="new-title" type="text" placeholder="Title" maxlength="100" />
-          <textarea id="new-description" placeholder="Content" maxlength="1600" style="margin-bottom:0"></textarea>
-          <fieldset class="container">
-            <small><a href="https://marked.js.org/demo/" target="_blank" class="secondary">Markdown</a> is supported</small>
-            <small><code id="remaining-description" style="float:right;"></code></small>
-          </fieldset>
-          <fieldset>
-            <label for="image-toggle">
-              <input type="checkbox" id="image-toggle" role="switch">
-              Include Image
-            </label>
-            <label for="link-toggle">
-              <input type="checkbox" id="link-toggle" role="switch">
-              Include Button Link
-            </label>
-          </fieldset>
-          <div id="new-image-group" class="grid" style="display:none">
-            <input id="new-image" type="url" placeholder="Image URL" maxlength="200" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
-            <textarea id="new-image-alt" type="text" placeholder="Description of the Image" maxlength="600"></textarea>
-          </div>
-          <div id="new-link-group" class="grid" style="display:none">
-            <input id="new-link" type="url" placeholder="Link" maxlength="200" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
-            <input id="new-link-text" type="text" placeholder="Link Button Text" maxlength="32" />
-          </div>
-          <p><small><em>Nothing is saved or sent to a server</em></small></p>
-        </section>
-        <section id="output" style="display:none">
-          <h4>Your Link</h4>
-          <input id="result" type="text" readonly />
-          <div class="grid">
-            <button id="copy">📋 Copy to Clipboard</button>
-            <a id="open" target="_blank"><button>↗️ Open in New Window</button></a>
-            <button id="qr">⬇️ Download QR Code</button>
-          </div>
-        </section>
-      </article>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/marked@4/marked.min.js"></script>
+    <script async src="https://cdn.jsdelivr.net/npm/qrious@4/dist/qrious.min.js"></script>
+    <style>
+      p:empty,
+      p > img[src=''] {
+        display: none;
+      }
+      textarea {
+        resize: vertical;
+      }
+    </style>
+  </head>
+  <body>
+    <div style="position: absolute; top: 0px; left: 8px; cursor: pointer">
+      <span id="theme" style="font-size: 16px" aria-label="Toggle light and dark mode">☀️</span>
     </div>
-  </main>
 
-  <footer id="faq" class="container">
-    <details>
-      <summary>Why does this page say this?</summary>
-      <p>
-        The content on this page lives entirely in the web address.
-        The person who sent you here wrote what's on this page.
-        Anybody can create and share one of these links.
-        This is a simple way to create small webpages without needing to host anything yourself.
-      </p>
-      <span id="reset" role="button">Make Your Own</span>
-    </details>
-  </footer>
-  
-  <script>
-    var title = document.getElementById('new-title');
-    var description = document.getElementById('new-description');
-    var imagetoggle = document.getElementById('image-toggle');
-    var image = document.getElementById('new-image');
-    var alt = document.getElementById('new-image-alt');
-    var linktoggle = document.getElementById('link-toggle');
-    var link = document.getElementById('new-link');
-    var linktext = document.getElementById('new-link-text');
-    var input = document.getElementById('input');
-    var example = document.getElementById('example');
-    var output = document.getElementById('output');
-    var faq = document.getElementById('faq');
-    var result = document.getElementById('result');
-    var copy = document.getElementById('copy');
-    var open = document.getElementById('open');
+    <div style="position: absolute; top: 0px; right: 8px">
+      <a href="https://github.com/leoherzog/ParameterPage" class="contrast" aria-label="Parameter Page GitHub repository">
+        <svg aria-hidden="true" focusable="false" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512" height="20px">
+          <path
+            fill="currentColor"
+            d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"></path>
+        </svg>
+      </a>
+    </div>
 
-    document.addEventListener('DOMContentLoaded', e => {
+    <main class="container">
+      <div>
+        <article style="max-width: 900px; margin: 10vh auto">
+          <header class="headings">
+            <h1 id="title" style="margin-bottom: 0"></h1>
+            <a
+              id="example"
+              href="/?title=This%20is%20an%20Example%20Page&description=**Anything**%20that%20you%20want%20to%20say%20will%20be%20encoded%20_into%20the%20link%20itself_%20for%20you%20to%20share.&image=https%3A%2F%2Flive.staticflickr.com%2F65535%2F52259221868_e86daccb7d_6k.jpg&alt=An%20undulating%2C%20translucent%20star-forming%20region%20in%20the%20Carina%20Nebula%20is%20shown%20in%20this%20Webb%20image%2C%20hued%20in%20ambers%20and%20blues%3B%20foreground%20stars%20with%20diffraction%20spikes%20can%20be%20seen%2C%20as%20can%20a%20speckling%20of%20background%20points%20of%20light%20through%20the%20cloudy%20nebula&link=%2F&linktext=Make%20Your%20Own!"
+              >See an Example</a
+            >
+          </header>
+          <section id="content">
+            <p><img id="image" style="width: 100%" /></p>
+            <p id="description"></p>
+            <p><a id="link" target="_blank"></a></p>
+          </section>
+          <section id="input" style="display: none">
+            <input id="new-title" type="text" placeholder="Title" maxlength="100" />
+            <textarea id="new-description" placeholder="Content" maxlength="1600" style="margin-bottom: 0"></textarea>
+            <fieldset class="container">
+              <small><a href="https://marked.js.org/demo/" target="_blank" class="secondary">Markdown</a> is supported</small>
+              <small><code id="remaining-description" style="float: right"></code></small>
+            </fieldset>
+            <fieldset>
+              <label for="image-toggle">
+                <input type="checkbox" id="image-toggle" role="switch" />
+                Include Image
+              </label>
+              <label for="link-toggle">
+                <input type="checkbox" id="link-toggle" role="switch" />
+                Include Button Link
+              </label>
+            </fieldset>
+            <div id="new-image-group" class="grid" style="display: none">
+              <input id="new-image" type="url" placeholder="Image URL" maxlength="200" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+              <textarea id="new-image-alt" type="text" placeholder="Description of the Image" maxlength="600"></textarea>
+            </div>
+            <div id="new-link-group" class="grid" style="display: none">
+              <input id="new-link" type="url" placeholder="Link" maxlength="200" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+              <input id="new-link-text" type="text" placeholder="Link Button Text" maxlength="32" />
+            </div>
+            <p>
+              <small><em>Nothing is saved or sent to a server</em></small>
+            </p>
+          </section>
+          <section id="output" style="display: none">
+            <h4>Your Link</h4>
+            <input id="result" type="text" readonly />
+            <div class="grid">
+              <button id="copy">📋 Copy to Clipboard</button>
+              <a id="open" target="_blank"><button>↗️ Open in New Window</button></a>
+              <button id="qr">⬇️ Download QR Code</button>
+            </div>
+          </section>
+        </article>
+      </div>
+    </main>
 
-      document.documentElement.dataset.theme = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-      document.getElementById('theme').innerText = document.documentElement.dataset.theme === 'dark' ? '☀️' : '🌙';
-      document.getElementById('theme').addEventListener('click', e => {
-        document.documentElement.dataset.theme = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
-        e.srcElement.innerText = document.documentElement.dataset.theme === 'dark' ? '☀️' : '🌙';
-      });
+    <footer id="faq" class="container">
+      <details>
+        <summary>Why does this page say this?</summary>
+        <p>The content on this page lives entirely in the web address. The person who sent you here wrote what's on this page. Anybody can create and share one of these links. This is a simple way to create small webpages without needing to host anything yourself.</p>
+        <span id="reset" role="button">Make Your Own</span>
+      </details>
+    </footer>
 
-      title.addEventListener('change', e => update());
-      title.addEventListener('keyup', e => update());
-      description.addEventListener('change', e => update());
-      description.addEventListener('keyup', e => update());
-      imagetoggle.addEventListener('change', e => {
-        document.getElementById('new-image-group').style.display = e.target.checked ? 'grid' : 'none';
-        update();
-      });
-      linktoggle.addEventListener('change', e => {
-        document.getElementById('new-link-group').style.display = e.target.checked ? 'grid' : 'none';
-        update();
-      });
-      var imagechange;
-      image.addEventListener('change', e => {
-        clearTimeout(imagechange);
-        imagechange = setTimeout(() => update(), 400);
-      });
-      image.addEventListener('keyup', e => {
-        clearTimeout(imagechange);
-        imagechange = setTimeout(() => update(), 400);
-      });
-      link.addEventListener('change', e => update());
-      link.addEventListener('keyup', e => update());
-      linktext.addEventListener('change', e => update());
-      linktext.addEventListener('keyup', e => update());
-      copy.addEventListener('click', e => {
-        result.select();
-        document.execCommand('copy');
-      });
-      document.getElementById('qr').addEventListener('click', e => {
-        let code = new QRious({
-          "value": result.value,
-          "size": 1000,
-          "padding": 50
+    <script>
+      var title = document.getElementById('new-title');
+      var description = document.getElementById('new-description');
+      var imagetoggle = document.getElementById('image-toggle');
+      var image = document.getElementById('new-image');
+      var alt = document.getElementById('new-image-alt');
+      var linktoggle = document.getElementById('link-toggle');
+      var link = document.getElementById('new-link');
+      var linktext = document.getElementById('new-link-text');
+      var input = document.getElementById('input');
+      var example = document.getElementById('example');
+      var output = document.getElementById('output');
+      var faq = document.getElementById('faq');
+      var result = document.getElementById('result');
+      var copy = document.getElementById('copy');
+      var open = document.getElementById('open');
+
+      document.addEventListener('DOMContentLoaded', (e) => {
+        document.documentElement.dataset.theme = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        document.getElementById('theme').innerText = document.documentElement.dataset.theme === 'dark' ? '☀️' : '🌙';
+        document.getElementById('theme').addEventListener('click', (e) => {
+          document.documentElement.dataset.theme = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
+          e.srcElement.innerText = document.documentElement.dataset.theme === 'dark' ? '☀️' : '🌙';
         });
-        let download = document.createElement('a');
-        download.download = (title.value ? title.value.toLowerCase().substring(0, 20).trim() : location.host) + '-qr.png';
-        download.href = code.toDataURL('image/png');
-        download.click();
-      });
-      document.getElementById('reset').addEventListener('click', e => reset());
 
-      // check for params on first load
-      const params = new Proxy(new URLSearchParams(window.location.search), {
-        "get": (searchParams, prop) => searchParams.get(prop),
-      });
-      if (params.title || params.description) {
-        title.value = params.title;
-        description.value = params.description;
-        image.value = params.image;
-        alt.value = params.alt;
-        link.value = params.link;
-        linktext.value = params.linktext;
-        show();
-      } else {
-        reset();
-      }
+        title.addEventListener('change', (e) => update());
+        title.addEventListener('keyup', (e) => update());
+        description.addEventListener('change', (e) => update());
+        description.addEventListener('keyup', (e) => update());
+        imagetoggle.addEventListener('change', (e) => {
+          document.getElementById('new-image-group').style.display = e.target.checked ? 'grid' : 'none';
+          update();
+        });
+        linktoggle.addEventListener('change', (e) => {
+          document.getElementById('new-link-group').style.display = e.target.checked ? 'grid' : 'none';
+          update();
+        });
+        var imagechange;
+        image.addEventListener('change', (e) => {
+          clearTimeout(imagechange);
+          imagechange = setTimeout(() => update(), 400);
+        });
+        image.addEventListener('keyup', (e) => {
+          clearTimeout(imagechange);
+          imagechange = setTimeout(() => update(), 400);
+        });
+        link.addEventListener('change', (e) => update());
+        link.addEventListener('keyup', (e) => update());
+        linktext.addEventListener('change', (e) => update());
+        linktext.addEventListener('keyup', (e) => update());
+        copy.addEventListener('click', (e) => {
+          result.select();
+          document.execCommand('copy');
+        });
+        document.getElementById('qr').addEventListener('click', (e) => {
+          let code = new QRious({
+            value: result.value,
+            size: 1000,
+            padding: 50,
+          });
+          let download = document.createElement('a');
+          download.download = (title.value ? title.value.toLowerCase().substring(0, 20).trim() : location.host) + '-qr.png';
+          download.href = code.toDataURL('image/png');
+          download.click();
+        });
+        document.getElementById('reset').addEventListener('click', (e) => reset());
 
-    });
-
-    function reset() {
-      title.value = '';
-      description.value = '';
-      document.getElementById('remaining-description').innerText = description.maxLength;
-      image.value = '';
-      alt.value = '';
-      link.value = '';
-      linktext.value = '';
-      window.history.replaceState(null, document.title, window.location.pathname);
-      document.getElementById('title').innerText = 'What would you like your page to say?';
-      document.getElementById('description').innerText = 'Create your custom ' + location.host + (window.location.pathname === '/' ? '' : window.location.pathname) + ' webpage';
-      document.getElementById('content').style.display = 'none';
-      update();
-      example.style.display = 'show';
-      input.style.display = 'block';
-      output.style.display = 'none';
-      faq.style.display = 'none';
-    }
-
-    function show() {
-      document.getElementById('title').innerHTML = escapeHtml(title.value);
-      document.getElementById('description').innerHTML = marked.parse(escapeHtml(description.value));
-      document.getElementById('image').src = image.value;
-      document.getElementById('image').alt = alt.value;
-      document.getElementById('link').innerHTML = link.value ? '<button>' + (linktext.value ? linktext.value : link.value) + '</button>' : '';
-      document.getElementById('link').href = link.value;
-      document.getElementById('content').style.display = 'block';
-      example.style.display = 'none';
-      input.style.display = 'none';
-      output.style.display = 'none';
-      faq.style.display = 'block';
-    }
-
-    async function update() {
-      if (title.value || description.value) {
-        example.style.display = 'none';
-        document.getElementById('remaining-description').innerText = description.maxLength - description.value.length;
-        if (!image.value) {
-          image.setAttribute('aria-invalid', '');
+        // check for params on first load
+        const params = new Proxy(new URLSearchParams(window.location.search), {
+          get: (searchParams, prop) => searchParams.get(prop),
+        });
+        if (params.title || params.description) {
+          title.value = params.title;
+          description.value = params.description;
+          image.value = params.image;
+          alt.value = params.alt;
+          link.value = params.link;
+          linktext.value = params.linktext;
+          show();
         } else {
-          console.log('Checking ' + image.value + '...');
-          var imagevalidator = new Image();
-          imagevalidator.onload = function() {
-            if (imagevalidator.width > 0) {
-              image.setAttribute('aria-invalid', 'false');
-            }
-          }
-          imagevalidator.onerror = function() {
-            image.setAttribute('aria-invalid', 'true');
-          }
-          imagevalidator.src = image.value;
+          reset();
         }
-        if (!link.value) {
-          link.setAttribute('aria-invalid', '');
-        } else {
-          link.setAttribute('aria-invalid', !link.validity.valid);
-        }
-        result.value = window.location.origin + '/?';
-        let values = {"title": title.value, "description": description.value};
-        if (imagetoggle.checked) {
-          values.image = image.value;
-          values.alt = alt.value;
-        }
-        if (linktoggle.checked) {
-          values.link = link.value;
-          values.linktext = linktext.value;
-        }
-        for (let [param, value] of Object.entries(values)) {
-          if (value) result.value += `${param}=${encodeURIComponent(value.trim())}&`;
-        }
-        result.value = result.value.slice(0, -1);
-        open.href = result.value;
-        example.style.display = 'none';
-        output.style.display = 'block';
-      } else {
-        example.style.display = 'block';
+      });
+
+      function reset() {
+        title.value = '';
+        description.value = '';
+        document.getElementById('remaining-description').innerText = description.maxLength;
+        image.value = '';
+        alt.value = '';
+        link.value = '';
+        linktext.value = '';
+        window.history.replaceState(null, document.title, window.location.pathname);
+        document.getElementById('title').innerText = 'What would you like your page to say?';
+        document.getElementById('description').innerText = 'Create your custom ' + location.host + (window.location.pathname === '/' ? '' : window.location.pathname) + ' webpage';
+        document.getElementById('content').style.display = 'none';
+        update();
+        example.style.display = 'show';
+        input.style.display = 'block';
         output.style.display = 'none';
+        faq.style.display = 'none';
       }
-    }
 
-    function escapeHtml(string) {
-      return string.replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;').replaceAll("'", '&apos;');
-    }
-  </script>
-</body>
+      function show() {
+        document.getElementById('title').innerHTML = escapeHtml(title.value);
+        document.getElementById('description').innerHTML = marked.parse(escapeHtml(description.value));
+        document.getElementById('image').src = image.value;
+        document.getElementById('image').alt = alt.value;
+        document.getElementById('link').innerHTML = link.value ? '<button>' + (linktext.value ? linktext.value : link.value) + '</button>' : '';
+        document.getElementById('link').href = link.value;
+        document.getElementById('content').style.display = 'block';
+        example.style.display = 'none';
+        input.style.display = 'none';
+        output.style.display = 'none';
+        faq.style.display = 'block';
+      }
+
+      async function update() {
+        if (title.value || description.value) {
+          example.style.display = 'none';
+          document.getElementById('remaining-description').innerText = description.maxLength - description.value.length;
+          if (!image.value) {
+            image.setAttribute('aria-invalid', '');
+          } else {
+            console.log('Checking ' + image.value + '...');
+            var imagevalidator = new Image();
+            imagevalidator.onload = function () {
+              if (imagevalidator.width > 0) {
+                image.setAttribute('aria-invalid', 'false');
+              }
+            };
+            imagevalidator.onerror = function () {
+              image.setAttribute('aria-invalid', 'true');
+            };
+            imagevalidator.src = image.value;
+          }
+          if (!link.value) {
+            link.setAttribute('aria-invalid', '');
+          } else {
+            link.setAttribute('aria-invalid', !link.validity.valid);
+          }
+          result.value = window.location.origin + '/?';
+          let values = { title: title.value, description: description.value };
+          if (imagetoggle.checked) {
+            values.image = image.value;
+            values.alt = alt.value;
+          }
+          if (linktoggle.checked) {
+            values.link = link.value;
+            values.linktext = linktext.value;
+          }
+          for (let [param, value] of Object.entries(values)) {
+            if (value) result.value += `${param}=${encodeURIComponent(value.trim())}&`;
+          }
+          result.value = result.value.slice(0, -1);
+          open.href = result.value;
+          example.style.display = 'none';
+          output.style.display = 'block';
+        } else {
+          example.style.display = 'block';
+          output.style.display = 'none';
+        }
+      }
+
+      function escapeHtml(string) {
+        return string.replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;').replaceAll("'", '&apos;');
+      }
+    </script>
+  </body>
 </html>
