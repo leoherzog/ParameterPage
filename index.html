@@ -47,8 +47,8 @@
     </style>
   </head>
   <body>
-    <div style="position: absolute; top: 0px; left: 8px; cursor: pointer">
-      <span id="theme" style="font-size: 16px" aria-label="Toggle light and dark mode">☀️</span>
+    <div style="position: absolute; top: 0px; left: 8px">
+      <button id="theme" type="button" aria-label="Toggle light and dark mode" aria-pressed="false" style="background: none; border: none; padding: 0; font-size: 16px; cursor: pointer; color: inherit">☀️</button>
     </div>
 
     <div style="position: absolute; top: 0px; right: 8px">
@@ -125,7 +125,7 @@
       <details>
         <summary>Why does this page say this?</summary>
         <p>The content on this page lives entirely in the web address. The person who sent you here wrote what's on this page. Anybody can create and share one of these links. This is a simple way to create small webpages without needing to host anything yourself.</p>
-        <span id="reset" role="button">Make Your Own</span>
+        <button id="reset" type="button">Make Your Own</button>
       </details>
     </footer>
 
@@ -147,17 +147,19 @@
       var open = document.getElementById('open');
 
       document.addEventListener('DOMContentLoaded', (e) => {
-        document.documentElement.dataset.theme = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-        document.getElementById('theme').innerText = document.documentElement.dataset.theme === 'dark' ? '☀️' : '🌙';
-        document.getElementById('theme').addEventListener('click', (e) => {
-          document.documentElement.dataset.theme = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
-          e.srcElement.innerText = document.documentElement.dataset.theme === 'dark' ? '☀️' : '🌙';
+        const themeBtn = document.getElementById('theme');
+        const applyTheme = (mode) => {
+          document.documentElement.dataset.theme = mode;
+          themeBtn.textContent = mode === 'dark' ? '☀️' : '🌙';
+          themeBtn.setAttribute('aria-pressed', mode === 'dark');
+        };
+        applyTheme(window.matchMedia?.('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        themeBtn.addEventListener('click', () => {
+          applyTheme(document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark');
         });
 
-        title.addEventListener('change', (e) => update());
-        title.addEventListener('keyup', (e) => update());
-        description.addEventListener('change', (e) => update());
-        description.addEventListener('keyup', (e) => update());
+        title.addEventListener('input', update);
+        description.addEventListener('input', update);
         imagetoggle.addEventListener('change', (e) => {
           document.getElementById('new-image-group').style.display = e.target.checked ? 'grid' : 'none';
           update();
@@ -166,23 +168,14 @@
           document.getElementById('new-link-group').style.display = e.target.checked ? 'grid' : 'none';
           update();
         });
-        var imagechange;
-        image.addEventListener('change', (e) => {
+        let imagechange;
+        image.addEventListener('input', () => {
           clearTimeout(imagechange);
-          imagechange = setTimeout(() => update(), 400);
+          imagechange = setTimeout(update, 400);
         });
-        image.addEventListener('keyup', (e) => {
-          clearTimeout(imagechange);
-          imagechange = setTimeout(() => update(), 400);
-        });
-        link.addEventListener('change', (e) => update());
-        link.addEventListener('keyup', (e) => update());
-        linktext.addEventListener('change', (e) => update());
-        linktext.addEventListener('keyup', (e) => update());
-        copy.addEventListener('click', (e) => {
-          result.select();
-          document.execCommand('copy');
-        });
+        link.addEventListener('input', update);
+        linktext.addEventListener('input', update);
+        copy.addEventListener('click', () => navigator.clipboard.writeText(result.value));
         document.getElementById('qr').addEventListener('click', (e) => {
           let code = new QRious({
             value: result.value,
@@ -190,23 +183,21 @@
             padding: 50,
           });
           let download = document.createElement('a');
-          download.download = (title.value ? title.value.toLowerCase().substring(0, 20).trim() : location.host) + '-qr.png';
+          download.download = (title.value ? title.value.trim().toLowerCase().substring(0, 20) : location.host) + '-qr.png';
           download.href = code.toDataURL('image/png');
           download.click();
         });
         document.getElementById('reset').addEventListener('click', (e) => reset());
 
         // check for params on first load
-        const params = new Proxy(new URLSearchParams(window.location.search), {
-          get: (searchParams, prop) => searchParams.get(prop),
-        });
-        if (params.title || params.description) {
-          title.value = params.title;
-          description.value = params.description;
-          image.value = params.image;
-          alt.value = params.alt;
-          link.value = params.link;
-          linktext.value = params.linktext;
+        const params = new URLSearchParams(window.location.search);
+        if (params.has('title') || params.has('description')) {
+          title.value = params.get('title') ?? '';
+          description.value = params.get('description') ?? '';
+          image.value = params.get('image') ?? '';
+          alt.value = params.get('alt') ?? '';
+          link.value = params.get('link') ?? '';
+          linktext.value = params.get('linktext') ?? '';
           show();
         } else {
           reset();
@@ -226,19 +217,27 @@
         document.getElementById('description').innerText = 'Create your custom ' + location.host + (window.location.pathname === '/' ? '' : window.location.pathname) + ' webpage';
         document.getElementById('content').style.display = 'none';
         update();
-        example.style.display = 'show';
+        example.style.display = 'inline';
         input.style.display = 'block';
         output.style.display = 'none';
         faq.style.display = 'none';
       }
 
       function show() {
-        document.getElementById('title').innerHTML = escapeHtml(title.value);
-        document.getElementById('description').innerHTML = marked.parse(escapeHtml(description.value));
+        document.getElementById('title').textContent = title.value;
+        document.getElementById('description').innerHTML = renderMarkdown(description.value);
         document.getElementById('image').src = image.value;
         document.getElementById('image').alt = alt.value;
-        document.getElementById('link').innerHTML = link.value ? '<button>' + (linktext.value ? linktext.value : link.value) + '</button>' : '';
-        document.getElementById('link').href = link.value;
+        const linkEl = document.getElementById('link');
+        linkEl.textContent = '';
+        if (link.value) {
+          const btn = document.createElement('button');
+          btn.textContent = linktext.value || link.value;
+          linkEl.appendChild(btn);
+          linkEl.href = safeHref(link.value);
+        } else {
+          linkEl.removeAttribute('href');
+        }
         document.getElementById('content').style.display = 'block';
         example.style.display = 'none';
         input.style.display = 'none';
@@ -251,7 +250,7 @@
           example.style.display = 'none';
           document.getElementById('remaining-description').innerText = description.maxLength - description.value.length;
           if (!image.value) {
-            image.setAttribute('aria-invalid', '');
+            image.removeAttribute('aria-invalid');
           } else {
             console.log('Checking ' + image.value + '...');
             var imagevalidator = new Image();
@@ -266,7 +265,7 @@
             imagevalidator.src = image.value;
           }
           if (!link.value) {
-            link.setAttribute('aria-invalid', '');
+            link.removeAttribute('aria-invalid');
           } else {
             link.setAttribute('aria-invalid', !link.validity.valid);
           }
@@ -293,8 +292,26 @@
         }
       }
 
-      function escapeHtml(string) {
-        return string.replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;').replaceAll("'", '&apos;');
+      function renderMarkdown(source) {
+        const doc = new DOMParser().parseFromString(marked.parse(source), 'text/html');
+        doc.body.querySelectorAll('script, style, iframe, object, embed, link, meta').forEach((el) => el.remove());
+        doc.body.querySelectorAll('*').forEach((el) => {
+          for (const attr of [...el.attributes]) {
+            const name = attr.name.toLowerCase();
+            if (name.startsWith('on')) el.removeAttribute(attr.name);
+            if ((name === 'href' || name === 'src') && /^\s*javascript:/i.test(attr.value)) el.removeAttribute(attr.name);
+          }
+        });
+        return doc.body.innerHTML;
+      }
+
+      function safeHref(value) {
+        try {
+          const url = new URL(value, window.location.origin);
+          return ['http:', 'https:', 'mailto:'].includes(url.protocol) ? url.href : '#';
+        } catch {
+          return '#';
+        }
       }
     </script>
   </body>
